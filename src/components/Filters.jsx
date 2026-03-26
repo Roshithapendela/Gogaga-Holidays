@@ -6,6 +6,8 @@ function Filters({
   onDestinationSearch,
   tripDate,
   setTripDate,
+  returnDate,
+  setReturnDate,
   passengers,
   setPassengers,
   hotelStar,
@@ -89,7 +91,7 @@ function Filters({
 
   return (
     <div className="space-y-4">
-      <div className="grid grid-cols-1 gap-3 lg:grid-cols-[2fr_1fr_1fr_auto]">
+      <div className="grid grid-cols-1 gap-3 lg:grid-cols-[2fr_1fr_1fr_1fr_auto]">
         <label className="rounded-md border border-gray-300 bg-white p-2">
           <span className="block text-[11px] text-gray-500">Destination</span>
           <input
@@ -109,6 +111,16 @@ function Filters({
           <input
             value={tripDate}
             onChange={(event) => setTripDate(event.target.value)}
+            type="date"
+            className="mt-1 w-full border-none p-0 text-sm font-medium text-gray-800 outline-none"
+          />
+        </label>
+
+        <label className="rounded-md border border-gray-300 bg-white p-2">
+          <span className="block text-[11px] text-gray-500">Return date</span>
+          <input
+            value={returnDate}
+            onChange={(event) => setReturnDate(event.target.value)}
             type="date"
             className="mt-1 w-full border-none p-0 text-sm font-medium text-gray-800 outline-none"
           />

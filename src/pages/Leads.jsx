@@ -28,6 +28,17 @@ const airportToCity = {
 };
 
 function Leads() {
+  const fareMultipliers = {
+    Publish: 1,
+    Flexi: 1.04,
+    XpressBiz: 2.19,
+  };
+
+  const getFareAmount = (basePrice, fareLabel) => {
+    const multiplier = fareMultipliers[fareLabel] ?? 1;
+    return Math.round((basePrice ?? 0) * multiplier);
+  };
+
   const [isLoading, setIsLoading] = useState(false);
   const initialIndianFlights = flights.filter(
     (flight) => flight.type === "indian",
@@ -38,6 +49,7 @@ function Leads() {
   const [destinationInput, setDestinationInput] = useState("");
   const [destinationQuery, setDestinationQuery] = useState("");
   const [tripDate, setTripDate] = useState("2026-03-12");
+  const [returnDate, setReturnDate] = useState("2026-03-17");
   const [passengers, setPassengers] = useState({
     adults: 2,
     children6to12: 0,
@@ -57,6 +69,7 @@ function Leads() {
       initialIndianFlights[0]
     )?.id ?? null,
   );
+  const [fareSelections, setFareSelections] = useState({});
 
   const setLoadingPulse = () => {
     setIsLoading(true);
@@ -117,8 +130,19 @@ function Leads() {
     setLoadingPulse();
   };
 
-  const outboundPrice = selectedOutbound?.price ?? 0;
-  const returnPrice = selectedReturn?.price ?? 0;
+  const outboundFareType = selectedOutbound
+    ? (fareSelections[selectedOutbound.id] ?? "Publish")
+    : "Publish";
+  const returnFareType = selectedReturn
+    ? (fareSelections[selectedReturn.id] ?? "Publish")
+    : "Publish";
+
+  const outboundPrice = selectedOutbound
+    ? getFareAmount(selectedOutbound.price, outboundFareType)
+    : 0;
+  const returnPrice = selectedReturn
+    ? getFareAmount(selectedReturn.price, returnFareType)
+    : 0;
   const totalFare = outboundPrice + returnPrice;
 
   const toTitleCase = (value) =>
@@ -166,16 +190,6 @@ function Leads() {
     });
   };
 
-  const returnDate = (() => {
-    if (!tripDate) return "-";
-
-    const date = new Date(tripDate);
-    if (Number.isNaN(date.getTime())) return "-";
-
-    date.setDate(date.getDate() + 5);
-    return formatDisplayDate(date);
-  })();
-
   const selectedSummary = useMemo(() => {
     if (!selectedOutbound || !selectedReturn) return "";
 
@@ -214,6 +228,8 @@ function Leads() {
           onDestinationSearch={handleDestinationSearch}
           tripDate={tripDate}
           setTripDate={setTripDate}
+          returnDate={returnDate}
+          setReturnDate={setReturnDate}
           passengers={passengers}
           setPassengers={setPassengers}
           hotelStar={hotelStar}
@@ -266,7 +282,7 @@ function Leads() {
                 {toRouteStart} → {toRouteEnd}
               </p>
               <p className="text-[11px] text-gray-500">
-                Return Date: {returnDate}
+                Return Date: {formatDisplayDate(returnDate)}
               </p>
             </div>
           </div>
@@ -312,6 +328,13 @@ function Leads() {
                         flight={flight}
                         selected={selectedOutbound?.id === flight.id}
                         onSelect={(item) => setSelectedOutboundId(item.id)}
+                        selectedFare={fareSelections[flight.id] ?? "Publish"}
+                        onFareChange={(fareLabel) =>
+                          setFareSelections((prev) => ({
+                            ...prev,
+                            [flight.id]: fareLabel,
+                          }))
+                        }
                       />
                     ))}
               </div>
@@ -331,6 +354,13 @@ function Leads() {
                         flight={flight}
                         selected={selectedReturn?.id === flight.id}
                         onSelect={(item) => setSelectedReturnId(item.id)}
+                        selectedFare={fareSelections[flight.id] ?? "Publish"}
+                        onFareChange={(fareLabel) =>
+                          setFareSelections((prev) => ({
+                            ...prev,
+                            [flight.id]: fareLabel,
+                          }))
+                        }
                       />
                     ))}
               </div>
