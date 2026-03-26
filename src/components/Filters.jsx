@@ -142,7 +142,7 @@ function Filters({
           </button>
 
           {openPassengerMenu && (
-            <div className="absolute right-0 top-[calc(100%+8px)] z-50 w-[320px] max-w-[92vw] rounded-lg border border-gray-200 bg-white shadow-lg">
+            <div className="absolute left-0 top-[calc(100%+8px)] z-50 w-[320px] max-w-[92vw] rounded-lg border border-gray-200 bg-white shadow-lg sm:left-auto sm:right-0">
               <div className="p-3">
                 {passengerRows.map((row, index) => (
                   <div
@@ -209,7 +209,7 @@ function Filters({
         <button
           type="button"
           onClick={onDestinationSearch}
-          className="rounded-md bg-black px-4 text-lg text-white transition-all duration-200 hover:bg-gray-800"
+          className="min-h-12 rounded-md bg-black px-4 text-lg text-white transition-all duration-200 hover:bg-gray-800"
         >
           ⌕
         </button>

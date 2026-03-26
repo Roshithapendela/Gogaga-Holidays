@@ -6,11 +6,11 @@ function Tabs({
 }) {
   return (
     <div className="space-y-6">
-      <div className="flex items-center gap-2">
+      <div className="flex flex-wrap items-center gap-2">
         <button
           type="button"
           onClick={() => setActiveHolidayTab("indian")}
-          className={`rounded-md px-4 py-2 text-sm font-semibold transition-all duration-200 ${
+          className={`w-full rounded-md px-4 py-2 text-sm font-semibold transition-all duration-200 sm:w-auto ${
             activeHolidayTab === "indian"
               ? "bg-black text-white"
               : "bg-white text-gray-700 hover:bg-gray-100"
@@ -21,7 +21,7 @@ function Tabs({
         <button
           type="button"
           onClick={() => setActiveHolidayTab("international")}
-          className={`rounded-md px-4 py-2 text-sm font-semibold transition-all duration-200 ${
+          className={`w-full rounded-md px-4 py-2 text-sm font-semibold transition-all duration-200 sm:w-auto ${
             activeHolidayTab === "international"
               ? "bg-black text-white"
               : "bg-white text-gray-700 hover:bg-gray-100"
@@ -31,11 +31,11 @@ function Tabs({
         </button>
       </div>
 
-      <div className="flex items-center gap-2">
+      <div className="flex flex-wrap items-center gap-2">
         <button
           type="button"
           onClick={() => setPackageMode("with-flights")}
-          className={`rounded-md px-4 py-2 text-sm font-medium transition-all duration-200 ${
+          className={`w-full rounded-md px-4 py-2 text-sm font-medium transition-all duration-200 sm:w-auto ${
             packageMode === "with-flights"
               ? "bg-gray-900 text-white"
               : "border border-gray-300 bg-white text-gray-700 hover:bg-gray-50"
@@ -46,7 +46,7 @@ function Tabs({
         <button
           type="button"
           onClick={() => setPackageMode("without-flights")}
-          className={`rounded-md px-4 py-2 text-sm font-medium transition-all duration-200 ${
+          className={`w-full rounded-md px-4 py-2 text-sm font-medium transition-all duration-200 sm:w-auto ${
             packageMode === "without-flights"
               ? "bg-gray-900 text-white"
               : "border border-gray-300 bg-white text-gray-700 hover:bg-gray-50"

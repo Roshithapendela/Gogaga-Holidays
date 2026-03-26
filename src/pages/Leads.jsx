@@ -213,7 +213,7 @@ function Leads() {
   ));
 
   return (
-    <section className="rounded-xl border border-gray-200 bg-gray-50 p-5 shadow-sm">
+    <section className="rounded-xl border border-gray-200 bg-gray-50 p-3 shadow-sm sm:p-5">
       <Tabs
         activeHolidayTab={activeHolidayTab}
         setActiveHolidayTab={handleHolidayTabChange}
@@ -248,7 +248,7 @@ function Leads() {
       )}
 
       {packageMode === "without-flights" && (
-        <div className="mt-5 rounded-xl border border-gray-200 bg-white p-8 text-center shadow-sm">
+        <div className="mt-5 rounded-xl border border-gray-200 bg-white p-5 text-center shadow-sm sm:p-8">
           <h3 className="text-xl font-semibold text-gray-800">
             Package without Flights
           </h3>
@@ -287,7 +287,7 @@ function Leads() {
             </div>
           </div>
 
-          <div className="sticky top-16 z-10 grid grid-cols-1 bg-blue-900 px-4 py-3 text-white lg:grid-cols-[1fr_1fr_auto]">
+          <div className="sticky top-16 z-10 grid grid-cols-1 gap-3 bg-blue-900 px-4 py-3 text-white sm:grid-cols-[1fr_1fr_auto] sm:gap-0">
             <div>
               <p className="text-xs text-blue-100">Departure</p>
               <p className="text-sm font-semibold">
@@ -302,7 +302,7 @@ function Leads() {
               </p>
               <p className="text-xl font-bold">{formatINR(returnPrice)}</p>
             </div>
-            <div className="self-end text-right">
+            <div className="self-start sm:self-end sm:text-right">
               <p className="text-xs text-blue-100">Total Round fare</p>
               <p className="text-2xl font-extrabold">{formatINR(totalFare)}</p>
             </div>

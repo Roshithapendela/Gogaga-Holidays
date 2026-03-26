@@ -1,4 +1,4 @@
-function Topbar() {
+function Topbar({ onMenuToggle }) {
   const actions = [
     {
       id: "widgets",
@@ -78,36 +78,49 @@ function Topbar() {
   ];
 
   return (
-    <header className="sticky top-0 z-20 flex h-16 items-center justify-end border-b border-gray-200 bg-white px-6 shadow-sm">
-      <div className="flex items-center gap-3">
-        {actions.map((item) => (
-          <button
-            key={item.id}
-            type="button"
-            className={`relative rounded-md border p-2 transition-colors duration-150 ${item.className}`}
-            aria-label={item.label}
-          >
-            <span className="inline-flex items-center justify-center">
-              {item.icon}
-            </span>
-            {item.badge > 0 && (
-              <span className="absolute -right-1.5 -top-1.5 inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-white px-1 text-[10px] font-semibold leading-none text-gray-700 shadow-sm ring-1 ring-gray-200">
-                {item.badge > 99 ? "99+" : item.badge}
+    <header className="sticky top-0 z-20 border-b border-gray-200 bg-white px-3 py-2 shadow-sm sm:px-4 lg:flex lg:h-16 lg:items-center lg:justify-end lg:px-6 lg:py-0">
+      <div className="flex min-h-12 w-full items-center justify-between gap-2 lg:min-h-0 lg:w-auto lg:justify-end">
+        <button
+          type="button"
+          onClick={onMenuToggle}
+          className="rounded-md border border-gray-200 p-2 text-gray-600 hover:bg-gray-100 lg:hidden"
+          aria-label="Open sidebar"
+        >
+          <span className="block h-0.5 w-4 bg-current" />
+          <span className="mt-1 block h-0.5 w-4 bg-current" />
+          <span className="mt-1 block h-0.5 w-4 bg-current" />
+        </button>
+
+        <div className="flex w-full flex-wrap items-center justify-end gap-2 sm:gap-3 lg:w-auto lg:flex-nowrap">
+          {actions.map((item) => (
+            <button
+              key={item.id}
+              type="button"
+              className={`relative rounded-md border p-1.5 transition-colors duration-150 sm:p-2 ${item.className}`}
+              aria-label={item.label}
+            >
+              <span className="inline-flex items-center justify-center">
+                {item.icon}
               </span>
-            )}
-          </button>
-        ))}
-        <div className="ml-2 flex items-center gap-2 rounded-full border border-gray-200 bg-gray-50 px-3 py-1.5">
-          <div className="h-8 w-8 shrink-0 overflow-hidden rounded-full ring-1 ring-gray-200">
-            <img
-              src="/profile.png"
-              alt="Profile"
-              className="h-full w-full object-cover object-center"
-            />
+              {item.badge > 0 && (
+                <span className="absolute -right-1.5 -top-1.5 inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-white px-1 text-[10px] font-semibold leading-none text-gray-700 shadow-sm ring-1 ring-gray-200">
+                  {item.badge > 99 ? "99+" : item.badge}
+                </span>
+              )}
+            </button>
+          ))}
+          <div className="ml-2 flex items-center gap-2 rounded-full border border-gray-200 bg-gray-50 px-3 py-1.5">
+            <div className="h-8 w-8 shrink-0 overflow-hidden rounded-full ring-1 ring-gray-200">
+              <img
+                src="/profile.png"
+                alt="Profile"
+                className="h-full w-full object-cover object-center"
+              />
+            </div>
+            <span className="hidden text-sm font-medium text-gray-700 sm:inline">
+              Pendela Roshitha
+            </span>
           </div>
-          <span className="text-sm font-medium text-gray-700">
-            Pendela Roshitha
-          </span>
         </div>
       </div>
     </header>

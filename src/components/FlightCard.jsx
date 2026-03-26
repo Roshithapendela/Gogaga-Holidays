@@ -45,7 +45,7 @@ function FlightCard({
       <div
         className={`px-3 py-2 text-gray-900 ${selected ? "bg-gray-100" : "bg-white"}`}
       >
-        <div className="grid grid-cols-[1.2fr_1.8fr] items-center gap-2">
+        <div className="grid grid-cols-1 items-center gap-2 sm:grid-cols-[1.2fr_1.8fr]">
           <div className="flex items-center gap-2">
             <div className="flex h-8 w-8 items-center justify-center rounded-md border border-gray-200 bg-white">
               {flight.logo ? (
@@ -68,15 +68,15 @@ function FlightCard({
             </div>
           </div>
 
-          <div className="grid grid-cols-[auto_1fr_auto] items-center gap-3 text-right">
+          <div className="grid grid-cols-3 items-center gap-2 text-right sm:grid-cols-[auto_1fr_auto] sm:gap-3">
             <div className="text-left">
-              <p className="text-xl leading-none font-bold text-gray-800">
+              <p className="text-lg leading-none font-bold text-gray-800 sm:text-xl">
                 {flight.departureTime}
               </p>
               <p className="text-[11px] text-gray-500">{flight.from}</p>
             </div>
 
-            <div className="min-w-[120px] text-center">
+            <div className="min-w-0 text-center sm:min-w-[120px]">
               <p className="text-xs text-gray-500">{flight.duration}</p>
               <div className="my-0.5 h-px w-full bg-gray-200" />
               {showSeatsFillingFast && (
@@ -85,7 +85,7 @@ function FlightCard({
             </div>
 
             <div>
-              <p className="text-xl leading-none font-bold text-gray-800">
+              <p className="text-lg leading-none font-bold text-gray-800 sm:text-xl">
                 {flight.arrivalTime}
               </p>
               <p className="text-[11px] text-gray-500">{flight.to}</p>
