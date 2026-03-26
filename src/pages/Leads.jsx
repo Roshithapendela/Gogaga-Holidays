@@ -7,16 +7,15 @@ import { formatINR } from "../utils/formatters";
 
 const airportToCity = {
   HYD: "hyderabad",
-  GOA: "goa",
+  GOI: "goa",
   DEL: "delhi",
   BOM: "mumbai",
   COK: "kochi",
-  AMD: "gujarat",
+  AMD: "ahmedabad",
   BLR: "bengaluru",
   MAA: "chennai",
   CCU: "kolkata",
   PNQ: "pune",
-  IXR: "ranchi",
   SIN: "singapore",
   DXB: "dubai",
   DOH: "doha",
@@ -29,6 +28,7 @@ const airportToCity = {
 };
 
 function Leads() {
+  const [isLoading, setIsLoading] = useState(false);
   const initialIndianFlights = flights.filter(
     (flight) => flight.type === "indian",
   );
@@ -57,6 +57,11 @@ function Leads() {
       initialIndianFlights[0]
     )?.id ?? null,
   );
+
+  const setLoadingPulse = () => {
+    setIsLoading(true);
+    window.setTimeout(() => setIsLoading(false), 350);
+  };
 
   const filteredFlights = useMemo(() => {
     const search = destinationQuery.trim().toLowerCase();
@@ -99,10 +104,17 @@ function Leads() {
     setSelectedReturnId(
       (tabFlights[5] ?? tabFlights[1] ?? tabFlights[0])?.id ?? null,
     );
+    setLoadingPulse();
   };
 
   const handleDestinationSearch = () => {
     setDestinationQuery(destinationInput);
+    setLoadingPulse();
+  };
+
+  const handlePackageModeChange = (mode) => {
+    setPackageMode(mode);
+    setLoadingPulse();
   };
 
   const outboundPrice = selectedOutbound?.price ?? 0;
@@ -164,13 +176,35 @@ function Leads() {
     return formatDisplayDate(date);
   })();
 
+  const selectedSummary = useMemo(() => {
+    if (!selectedOutbound || !selectedReturn) return "";
+
+    return `${selectedOutbound.airline} (${selectedOutbound.flightNumber}) + ${selectedReturn.airline} (${selectedReturn.flightNumber})`;
+  }, [selectedOutbound, selectedReturn]);
+
+  const skeletonCards = Array.from({ length: 3 }).map((_, index) => (
+    <div
+      key={index}
+      className="animate-pulse rounded-xl border border-gray-200 bg-white p-4 shadow-sm"
+    >
+      <div className="h-3 w-32 rounded bg-gray-200" />
+      <div className="mt-3 h-5 w-40 rounded bg-gray-200" />
+      <div className="mt-4 grid grid-cols-3 gap-3">
+        <div className="h-10 rounded bg-gray-100" />
+        <div className="h-10 rounded bg-gray-100" />
+        <div className="h-10 rounded bg-gray-100" />
+      </div>
+      <div className="mt-4 h-3 w-full rounded bg-gray-100" />
+    </div>
+  ));
+
   return (
     <section className="rounded-xl border border-gray-200 bg-gray-50 p-5 shadow-sm">
       <Tabs
         activeHolidayTab={activeHolidayTab}
         setActiveHolidayTab={handleHolidayTabChange}
         packageMode={packageMode}
-        setPackageMode={setPackageMode}
+        setPackageMode={handlePackageModeChange}
       />
 
       <div className="mt-5">
@@ -197,8 +231,20 @@ function Leads() {
         </div>
       )}
 
+      {packageMode === "without-flights" && (
+        <div className="mt-5 rounded-xl border border-gray-200 bg-white p-8 text-center shadow-sm">
+          <h3 className="text-xl font-semibold text-gray-800">
+            Package without Flights
+          </h3>
+          <p className="mt-2 text-sm text-gray-600">
+            Flights are excluded for this package mode. Switch back to "Package
+            with Flights" to view fares.
+          </p>
+        </div>
+      )}
+
       {packageMode === "with-flights" && filteredFlights.length > 0 && (
-        <div className="mt-5 overflow-hidden rounded-xl border border-blue-900">
+        <div className="mt-5 overflow-hidden rounded-xl border border-blue-900 bg-white">
           <div className="grid grid-cols-1 gap-2 border-b border-blue-200 bg-white px-4 py-3 text-sm text-gray-700 lg:grid-cols-[1fr_auto_1fr]">
             <div className="rounded-md border border-gray-200 px-3 py-2">
               <p className="text-[11px] text-gray-500">From</p>
@@ -225,7 +271,7 @@ function Leads() {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 bg-blue-900 px-4 py-3 text-white lg:grid-cols-[1fr_1fr_auto]">
+          <div className="sticky top-16 z-10 grid grid-cols-1 bg-blue-900 px-4 py-3 text-white lg:grid-cols-[1fr_1fr_auto]">
             <div>
               <p className="text-xs text-blue-100">Departure</p>
               <p className="text-sm font-semibold">
@@ -246,33 +292,48 @@ function Leads() {
             </div>
           </div>
 
+          <div className="border-b border-gray-200 bg-slate-50 px-4 py-2 text-xs text-slate-700">
+            Selected:{" "}
+            {selectedSummary || "Choose one departure and one return flight"}
+          </div>
+
           <div className="grid grid-cols-1 gap-4 bg-gray-100 p-4 xl:grid-cols-2">
             <div className="space-y-3">
               <h3 className="text-sm font-semibold text-gray-700">
                 Outbound: {selectedOutbound?.from ?? "-"}
               </h3>
-              {outboundFlights.map((flight) => (
-                <FlightCard
-                  key={`out-${flight.id}`}
-                  flight={flight}
-                  selected={selectedOutbound?.id === flight.id}
-                  onSelect={(item) => setSelectedOutboundId(item.id)}
-                />
-              ))}
+
+              <div className="max-h-[560px] space-y-3 overflow-y-auto pr-1">
+                {isLoading
+                  ? skeletonCards
+                  : outboundFlights.map((flight) => (
+                      <FlightCard
+                        key={`out-${flight.id}`}
+                        flight={flight}
+                        selected={selectedOutbound?.id === flight.id}
+                        onSelect={(item) => setSelectedOutboundId(item.id)}
+                      />
+                    ))}
+              </div>
             </div>
 
             <div className="space-y-3">
               <h3 className="text-sm font-semibold text-gray-700">
                 Return: {selectedReturn?.to ?? "-"}
               </h3>
-              {returnFlights.map((flight) => (
-                <FlightCard
-                  key={`ret-${flight.id}`}
-                  flight={flight}
-                  selected={selectedReturn?.id === flight.id}
-                  onSelect={(item) => setSelectedReturnId(item.id)}
-                />
-              ))}
+
+              <div className="max-h-[560px] space-y-3 overflow-y-auto pr-1">
+                {isLoading
+                  ? skeletonCards
+                  : returnFlights.map((flight) => (
+                      <FlightCard
+                        key={`ret-${flight.id}`}
+                        flight={flight}
+                        selected={selectedReturn?.id === flight.id}
+                        onSelect={(item) => setSelectedReturnId(item.id)}
+                      />
+                    ))}
+              </div>
             </div>
           </div>
         </div>

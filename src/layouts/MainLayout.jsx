@@ -16,8 +16,10 @@ function MainLayout() {
         className={`transition-all duration-200 ${collapsed ? "ml-[92px]" : "ml-[260px]"}`}
       >
         <Topbar />
-        <main className="p-6">
-          <Outlet />
+        <main className="p-4 md:p-6">
+          <div className="mx-auto w-full max-w-[1400px]">
+            <Outlet />
+          </div>
         </main>
       </div>
     </div>

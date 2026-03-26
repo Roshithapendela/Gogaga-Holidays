@@ -5,6 +5,7 @@ function Topbar() {
     { icon: "📄", label: "Documents", count: 1 },
   ];
 
+  
   return (
     <header className="sticky top-0 z-20 flex h-16 items-center justify-end border-b border-gray-200 bg-white px-6 shadow-sm">
       <div className="flex items-center gap-3">
