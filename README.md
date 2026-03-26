@@ -1,16 +1,81 @@
-# React + Vite
+# Gogaga Holidays
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A responsive React + Vite travel dashboard prototype for holiday package and flight selection workflows.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- Dashboard and leads module routing with nested layout
+- Responsive sidebar + topbar experience (mobile and desktop)
+- Holiday tabs: Indian and International
+- Package modes: with flights / without flights
+- Flight search by destination, airline, city, or airport code
+- Passenger selection, travel date filters, hotel standard, meal add-ons
+- Outbound and return flight selection with live fare summary
+- Dedicated Coming Soon page for unfinished modules
 
-## React Compiler
+## Routes
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- `/` → Dashboard
+- `/leads` → Leads booking/selection flow
+- Any other nested route → Coming Soon page
 
-## Expanding the ESLint configuration
+## Tech Stack
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- React 19
+- React Router DOM
+- Vite
+- Tailwind CSS
+- ESLint
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js 18+
+- npm 9+
+
+### Install
+
+```bash
+npm install
+```
+
+### Run Development Server
+
+```bash
+npm run dev
+```
+
+### Build for Production
+
+```bash
+npm run build
+```
+
+### Preview Production Build
+
+```bash
+npm run preview
+```
+
+### Lint
+
+```bash
+npm run lint
+```
+
+## Project Structure
+
+```
+src/
+	components/   # UI building blocks (Topbar, Sidebar, Tabs, Filters, FlightCard)
+	data/         # Static flight dataset
+	layouts/      # Main layout shell
+	pages/        # Dashboard, Leads, ComingSoon
+	utils/        # Format helpers (currency, etc.)
+```
+
+## Notes
+
+- Airline logos and UI images are served from `public/`.
+- Current data is static and can be replaced with API integration later.
